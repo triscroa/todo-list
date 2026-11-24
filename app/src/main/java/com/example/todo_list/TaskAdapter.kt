@@ -34,7 +34,6 @@ class TaskAdapter(
         holder.tvDueDate.text = "Due: ${task.dueDate}"
         holder.tvPriority.text = task.priority
 
-        // Clear listener before setting checked state to avoid recycled view bugs
         holder.cbCompleted.setOnCheckedChangeListener(null)
         holder.cbCompleted.isChecked = task.isCompleted
         toggleStrikeThrough(holder.tvTitle, task.isCompleted)
@@ -51,6 +50,15 @@ class TaskAdapter(
     }
 
     override fun getItemCount(): Int = tasks.size
+
+    fun getTaskAt(position: Int): Task = tasks[position]
+
+    fun removeTaskAt(position: Int) {
+        if (position in tasks.indices) {
+            tasks.removeAt(position)
+            notifyItemRemoved(position)
+        }
+    }
 
     fun updateTasks(newTasks: List<Task>) {
         tasks.clear()
